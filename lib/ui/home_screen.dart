@@ -17,9 +17,10 @@ class HomeScreen extends ConsumerWidget {
     final authNotifier = ref.read(authProvider.notifier);
 
     return Scaffold(
+      backgroundColor: AppTheme.lightGrey,
       appBar: AppBar(
         title: const Text('Sistema de Gestão de Contas'),
-        elevation: 4,
+        elevation: 0,
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -108,37 +109,51 @@ class HomeScreen extends ConsumerWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: AppTheme.error.withOpacity(0.5),
+                child: Center(
+                  child: Card(
+                    elevation: 4,
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Erro',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      child: Text(
-                        errorMessage,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 64,
+                            color: AppTheme.error.withOpacity(0.5),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Erro',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              errorMessage,
+                              textAlign: TextAlign.center,
+                              style:
+                                  Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              ref.invalidate(accountsProvider);
+                            },
+                            icon: const Icon(Icons.refresh),
+                            label: const Text('Tentar Novamente'),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        ref.invalidate(accountsProvider);
-                      },
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Tentar Novamente'),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -155,42 +170,58 @@ class HomeScreen extends ConsumerWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.7,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.account_balance_wallet_outlined,
-                        size: 64,
-                        color: AppTheme.mediumGrey.withOpacity(0.5),
+                  child: Center(
+                    child: Card(
+                      elevation: 4,
+                      margin: const EdgeInsets.symmetric(horizontal: 24),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Nenhuma conta',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Adicione uma conta para começar',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 24),
-                      FloatingActionButton.extended(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.account_balance_wallet_outlined,
+                              size: 64,
+                              color:
+                                  AppTheme.mediumGrey.withOpacity(0.5),
                             ),
-                            builder: (context) => const AddAccountModal(),
-                          );
-                        },
-                        icon: const Icon(Icons.add),
-                        label: const Text('Adicionar Conta'),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Nenhuma conta',
+                              style:
+                                  Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Adicione uma conta para começar',
+                              style:
+                                  Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 24),
+                            FloatingActionButton.extended(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(16),
+                                    ),
+                                  ),
+                                  builder: (context) =>
+                                      const AddAccountModal(),
+                                );
+                              },
+                              icon: const Icon(Icons.add),
+                              label: const Text('Adicionar Conta'),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -201,52 +232,74 @@ class HomeScreen extends ConsumerWidget {
             onRefresh: () async {
               ref.invalidate(accountsProvider);
             },
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppTheme.lightGrey,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total de Contas',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppTheme.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
                         ),
-                        decoration: BoxDecoration(
-                          color: AppTheme.secondary,
-                          borderRadius: BorderRadius.circular(20),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total de Contas',
+                              style:
+                                  Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Gerencie suas contas bancárias',
+                              style:
+                                  Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
                         ),
-                        child: Text(
-                          '${accounts.length}',
-                          style: const TextStyle(
-                            color: AppTheme.white,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.secondary,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '${accounts.length}',
+                            style: const TextStyle(
+                              color: AppTheme.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: accounts.length,
-                    itemBuilder: (context, index) {
-                      final account = accounts[index];
-                      return AccountWidget(account: account);
-                    },
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: accounts.length,
+                      itemBuilder: (context, index) {
+                        final account = accounts[index];
+                        return AccountWidget(account: account);
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

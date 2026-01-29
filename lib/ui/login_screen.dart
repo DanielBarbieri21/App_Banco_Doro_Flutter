@@ -150,16 +150,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Email field
+                        // Email label + field (melhor alinhado)
+                        Text(
+                          'E-mail',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: AppTheme.secondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                        const SizedBox(height: 6),
                         TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             hintText: 'usuario@example.com',
                             prefixIcon: const Icon(Icons.email_outlined),
-                            label: const Text('E-mail'),
                             filled: true,
                             fillColor: AppTheme.white,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide.none,
@@ -168,7 +179,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           validator: _validateEmail,
                         ),
                         const SizedBox(height: 16),
-                        // Password field
+                        // Password label + field
+                        Text(
+                          'Senha',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: AppTheme.secondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                        const SizedBox(height: 6),
                         TextFormField(
                           controller: _passwordController,
                           obscureText: !_showPassword,
@@ -185,9 +204,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 setState(() => _showPassword = !_showPassword);
                               },
                             ),
-                            label: const Text('Senha'),
                             filled: true,
                             fillColor: AppTheme.white,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide.none,
